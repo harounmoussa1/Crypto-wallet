@@ -1,0 +1,30 @@
+{
+  "name": "smart_contracts",
+  "version": "1.0.0",
+  "description": "eWallet Offline Tx - Smart Contracts",
+  "scripts": {
+    "node": "hardhat node --hostname 0.0.0.0",
+    "deploy": "hardhat run scripts/deploy.js --network localhost",
+    "deploy:local": "hardhat run scripts/deploy.js --network hardhat",
+    "compile": "hardhat compile",
+    "test": "hardhat test"
+  },
+  "keywords": [
+    "blockchain",
+    "ethereum",
+    "erc20",
+    "wallet"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-chai-matchers": "^2.1.0",
+    "@nomicfoundation/hardhat-ethers": "^4.0.3",
+    "@nomicfoundation/hardhat-toolbox": "^6.1.0",
+    "@nomiclabs/hardhat-ethers": "^2.2.3",
+    "@typechain/hardhat": "^9.1.0",
+    "ethers": "^6.16.0",
+    "hardhat": "^3.1.0"
+  },
+  "type": "module"
+}

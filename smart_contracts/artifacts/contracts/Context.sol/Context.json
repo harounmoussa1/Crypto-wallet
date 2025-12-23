@@ -1,0 +1,13 @@
+{
+  "_format": "hh3-artifact-1",
+  "contractName": "Context",
+  "sourceName": "contracts/Context.sol",
+  "abi": [],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "linkReferences": {},
+  "deployedLinkReferences": {},
+  "immutableReferences": {},
+  "inputSourceName": "project/contracts/Context.sol",
+  "buildInfoId": "solc-0_8_7-bef2294aa5c0c811c8aabb1e7349397fd5348671"
+}
