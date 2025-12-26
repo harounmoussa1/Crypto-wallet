@@ -1,7 +1,5 @@
 import { ethers } from 'ethers';
-
-// RPC Local (Nexora) via Cloudflare
-const LOCAL_RPC_URL = 'https://wales-cigarette-connected-parks.trycloudflare.com';
+import { CONFIG } from '../config/config';
 
 /**
  * Service pour interagir avec Ethereum Sepolia (ethers v5).
@@ -9,9 +7,9 @@ const LOCAL_RPC_URL = 'https://wales-cigarette-connected-parks.trycloudflare.com
 class BlockchainService {
     constructor() {
         // Syntax ethers v5 - Static Network Config to avoid auto-detection errors
-        this.provider = new ethers.providers.JsonRpcProvider(LOCAL_RPC_URL, {
-            name: 'Nexora Private Chain',
-            chainId: 31337
+        this.provider = new ethers.providers.JsonRpcProvider(CONFIG.DEFAULT_RPC_URL, {
+            name: CONFIG.NETWORK_NAME,
+            chainId: CONFIG.DEFAULT_CHAIN_ID
         });
     }
 

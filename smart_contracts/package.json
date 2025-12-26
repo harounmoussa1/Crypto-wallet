@@ -4,6 +4,8 @@
   "description": "eWallet Offline Tx - Smart Contracts",
   "scripts": {
     "node": "hardhat node --hostname 0.0.0.0",
+    "node:novalink": "hardhat node --hostname 0.0.0.0 --port 8546",
+    "node:persistent": "ganache --wallet.mnemonic \"test test test test test test test test test test test junk\" --database.dbPath ./chain_data --server.host 0.0.0.0 --server.port 8545",
     "deploy": "hardhat run scripts/deploy.js --network localhost",
     "deploy:local": "hardhat run scripts/deploy.js --network hardhat",
     "compile": "hardhat compile",
@@ -24,6 +26,7 @@
     "@nomiclabs/hardhat-ethers": "^2.2.3",
     "@typechain/hardhat": "^9.1.0",
     "ethers": "^6.16.0",
+    "ganache": "^7.9.2",
     "hardhat": "^3.1.0"
   },
   "type": "module"

@@ -3,10 +3,13 @@ import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, ActivityInd
 import { LinearGradient } from 'expo-linear-gradient';
 import WalletManager from '../services/WalletManager';
 
+import { useAuth } from '../context/AuthContext';
+
 export default function SetupScreen({ navigation }) {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [loading, setLoading] = useState(false);
+    const { unlockWallet } = useAuth();
 
     const handleSetup = async () => {
         if (password.length < 6) {
@@ -25,8 +28,9 @@ export default function SetupScreen({ navigation }) {
             // Auto create first wallet
             await WalletManager.createWallet("Compte Principal", password);
 
+            unlockWallet(password); // Unlock session
             Alert.alert("Succès", "Wallet configuré avec succès !");
-            navigation.replace('Home', { password });
+            navigation.replace('Home');
         } catch (error) {
             console.error(error);
             Alert.alert("Erreur", "Impossible de configurer le wallet.");
@@ -78,8 +82,8 @@ export default function SetupScreen({ navigation }) {
                     )}
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => Alert.alert("Import", "Fonctionnalité d'import à venir")}>
-                    <Text style={styles.link}>J'ai déjà un wallet (Import)</Text>
+                <TouchableOpacity onPress={() => navigation.navigate('ImportWallet')}>
+                    <Text style={styles.link}>J'ai déjà un wallet (Importer)</Text>
                 </TouchableOpacity>
             </View>
         </View>

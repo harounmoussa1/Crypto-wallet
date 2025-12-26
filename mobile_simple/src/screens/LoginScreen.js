@@ -4,16 +4,20 @@ import { LinearGradient } from 'expo-linear-gradient';
 import WalletManager from '../services/WalletManager';
 import { Ionicons } from '@expo/vector-icons'; // Assuming installed
 
+import { useAuth } from '../context/AuthContext';
+
 export default function LoginScreen({ navigation }) {
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
+    const { unlockWallet } = useAuth(); // Context hook
 
     const handleLogin = async () => {
         setLoading(true);
         try {
             const isValid = await WalletManager.verifyPassword(password);
             if (isValid) {
-                navigation.replace('Home', { password });
+                unlockWallet(password); // Update context state
+                navigation.replace('Home', { password }); // Pass password explicitly to Home
             } else {
                 Alert.alert("Erreur", "Mot de passe incorrect");
             }
@@ -61,7 +65,7 @@ export default function LoginScreen({ navigation }) {
                     )}
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => Alert.alert("Sécurité", "Si vous avez perdu votre mot de passe, vous devez restaurer votre wallet avec la phrase de récupération (non implémenté ici).")}>
+                <TouchableOpacity onPress={() => navigation.navigate('ResetPassword')}>
                     <Text style={styles.link}>Mot de passe oublié ?</Text>
                 </TouchableOpacity>
             </View>

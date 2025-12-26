@@ -1,0 +1,13 @@
+2025/12/27-00:14:06.763 6aa4 Recovering log #12
+2025/12/27-00:14:06.777 6aa4 Level-0 table #14: started
+2025/12/27-00:14:06.780 6aa4 Level-0 table #14: 25834 bytes OK
+2025/12/27-00:14:06.788 6aa4 Delete type=0 #12
+2025/12/27-00:14:06.789 6aa4 Delete type=3 #10
+2025/12/27-00:14:06.824 4fe0 Compacting 4@0 + 0@1 files
+2025/12/27-00:14:06.884 4fe0 Generated table #16@0: 248 keys, 36106 bytes
+2025/12/27-00:14:06.884 4fe0 Compacted 4@0 + 0@1 files => 36106 bytes
+2025/12/27-00:14:06.886 4fe0 compacted to: files[ 0 1 0 0 0 0 0 ]
+2025/12/27-00:14:06.886 4fe0 Delete type=2 #5
+2025/12/27-00:14:06.887 4fe0 Delete type=2 #8
+2025/12/27-00:14:06.890 4fe0 Delete type=2 #11
+2025/12/27-00:14:06.891 4fe0 Delete type=2 #14

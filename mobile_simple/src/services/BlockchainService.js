@@ -1,16 +1,30 @@
 import { ethers } from 'ethers';
 
+// --- Network Configuration (Local IP - Fixed) ---
+// Nexora: Port 8545, NovaLink: Port 8546
+// Using local IP for stable connection on same WiFi network
+const NEXORA_RPC = 'http://192.168.1.16:8545';
+const NOVALINK_RPC = 'http://192.168.1.16:8546';
+
 // Network Configurations
 export const NETWORKS = {
     // Local Blockchain (Our App's Main Network)
+    // Local Blockchain (Our App's Main Network)
     hardhat: {
         name: "Nexora Private Chain",
-        chainId: 31337,
-        rpcUrl: 'https://wales-cigarette-connected-parks.trycloudflare.com', // Tunnel Cloudflare (Global Access)
+        chainId: 1337, // Ganache default
+        rpcUrl: NEXORA_RPC, // Tunnel for Nexora
         currency: 'NXR',
         explorer: ''
     },
-    // Optional: Keep Mainnet for reference or remove if strictly local
+    // New Network: NovaLink (Running on separate Hardhat Node)
+    novalink: {
+        name: "NovaLink Network",
+        chainId: 31337, // Hardhat default
+        rpcUrl: NOVALINK_RPC, // Tunnel for NovaLink
+        currency: 'NVL',
+        explorer: ''
+    },
     mainnet: {
         name: "Ethereum Mainnet",
         chainId: 1,
@@ -23,7 +37,7 @@ export const NETWORKS = {
 class BlockchainService {
     constructor() {
         this.currentNetwork = NETWORKS.hardhat; // Default to Local/Nexora
-        // Pass network explicitly to avoid "detectNetwork" calls which fail in RN if connection is flaky
+
         this.provider = new ethers.providers.JsonRpcProvider(
             this.currentNetwork.rpcUrl,
             {
@@ -37,6 +51,7 @@ class BlockchainService {
     setNetwork(networkKey) {
         if (NETWORKS[networkKey]) {
             this.currentNetwork = NETWORKS[networkKey];
+
             this.provider = new ethers.providers.JsonRpcProvider(
                 this.currentNetwork.rpcUrl,
                 {
@@ -117,6 +132,43 @@ class BlockchainService {
         } catch (error) {
             console.error("Error sending transaction:", error);
             throw error;
+        }
+    }
+
+    // Feature: Scan recent blocks for incoming transactions (Simple Indexer)
+    async scanForIncomingTransactions(address, limit = 20) {
+        try {
+            const currentBlock = await this.provider.getBlockNumber();
+            // Scan last 'limit' blocks
+            const startBlock = Math.max(0, currentBlock - limit);
+
+            console.log(`[Scan] Scanning blocks ${startBlock} to ${currentBlock} for ${address}...`);
+
+            const foundTxs = [];
+
+            // Iterate backwards to find recent first
+            for (let i = currentBlock; i > startBlock; i--) {
+                const block = await this.provider.getBlockWithTransactions(i);
+                if (block && block.transactions) {
+                    for (const tx of block.transactions) {
+                        if (tx.to && tx.to.toLowerCase() === address.toLowerCase()) {
+                            // Found incoming transaction
+                            foundTxs.push({
+                                hash: tx.hash,
+                                from_address: tx.from,
+                                to_address: tx.to,
+                                value: ethers.utils.formatEther(tx.value),
+                                timestamp: block.timestamp * 1000, // seconds -> ms
+                                status: 'Confirmé'
+                            });
+                        }
+                    }
+                }
+            }
+            return foundTxs;
+        } catch (error) {
+            console.error("Scan error:", error);
+            return [];
         }
     }
 

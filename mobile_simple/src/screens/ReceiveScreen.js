@@ -7,7 +7,10 @@ import DatabaseService from '../services/DatabaseService';
 export default function ReceiveScreen({ route }) {
     const [address, setAddress] = useState(route.params?.address || '');
 
+    // Initial Load
     useEffect(() => {
+        // If address passed via route (from Home), use it.
+        // Otherwise load from DB as fallback.
         if (!address) {
             loadActiveWalletAddress();
         }
